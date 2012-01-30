@@ -1,0 +1,13 @@
+body{ overflow-x: hidden; font-family: "微软雅黑","Lucida Grande", "Lucida Sans", Arial, sans-serif; font-size:16px;}
+.container {width: 450px;}
+.ui-tabs .ui-tabs-nav { border:none; text-align:center;}
+
+#tabs {font-size:16px;}
+#tabs .ui-tabs-nav a{cursor:pointer;}
+
+.tab-list { list-style-type: none; margin: 0; padding: 0;}
+.tab-list li {margin:3px 0; padding:5px 10px; height:24px; line-height:24px; overflow:hidden; font-size:14px; cursor:pointer;}
+.ui-selecting { background: #D7EBF9 url(images/ui-bg_glass_80_d7ebf9_1x400.png) 50% 50% repeat-x; }
+.ui-selected { background: #3BAAE3 url(images/ui-bg_glass_50_3baae3_1x400.png) 50% 50% repeat-x; color: white; }
+
+.buttons {margin-top:10px; text-align:center;}

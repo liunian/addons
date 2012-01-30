@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>popup</title>
+    <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.17.custom.css"  />
+    <link rel="stylesheet" type="text/css" href="css/popup.css"  />
+</head>
+<body>
+    <div class="container">
+        
+        <div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">保存标签页</a></li>
+				<li id="load-handler"><a href="#tabs-2">载入标签页</a></li>
+				<li><a href="#tabs-3">说明</a></li>
+			</ul>
+			<div id="tabs-1">
+			    <ol id="open-tabs" class="tab-list">
+			    </ol>
+			    
+			    <div class="buttons">
+			        <button class="select-all" title="选择全部标签页">全选</button>
+			        <button id="save" title="保存选定的标签页">保存</button>
+			        <button id="save-and-sync" title="保存并在别的电脑上打开">自动载入</button>
+			    </div>
+			</div>
+			
+			<div id="tabs-2">
+			    <p id="loading">Loading</p>
+			    
+			    <ol id="load-tabs" class="tab-list">
+			    
+			    </ol>    
+			    
+			    <div class="buttons">
+			        <button class="select-all" title="选择所有">全选</button>
+			        <button id="load">载入</button>
+			        <button id="del">删除</button>
+			        <button id="loadAndDel">载入并删除</button>
+			    </div>
+			</div>
+			
+			<div id="tabs-3">一些说明。</div>
+		</div>        
+    </div>
+    <script src="js/jquery-1.7.1.min.js"></script>
+    <script src="js/jquery-ui-1.8.17.custom.min.js"></script>
+    <script src="js/jsFeed.js"></script>
+    <script src="js/popup.js"></script>
+</body>
+</html>

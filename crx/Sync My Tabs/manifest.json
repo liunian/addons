@@ -1,0 +1,12 @@
+{
+	"name": "Sync Tabs",
+	"version": "1.0",
+	"description": "使用 label: Sync Tabs 同步 Google bookmarks",
+	"permissions": [
+        "tabs", "http://*/*", "https://*/*", "file://*/*"
+    ],
+	"browser_action": {
+		"default_icon": "images/icon.png",
+		"popup": "popup.html"
+	}
+}
