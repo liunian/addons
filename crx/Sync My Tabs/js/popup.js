@@ -44,6 +44,67 @@
     $loading.show();
     // ui init end ===========
     
+    //
+    // urlModLabel = "/bookmarks/mark?op=modlabel&sig=
+    function getToken() {
+        var pattern = /bookmarks\/mark\?op=modlabel&sig=([^"]*)/,
+            token;
+            
+        $.ajax({
+            url: 'https://www.google.com/bookmarks/',
+            async: false,
+            dataType: 'text',
+            type: 'GET',
+            success: function(text) {
+                var result = pattern.exec(text);
+                if (result) token = result[1];
+            }
+        });
+        
+        return token;
+    }
+    
+    function notifyNotSignin() {
+        
+    }
+    
+    //
+    // https://www.google.com/bookmarks/mark?q=&bkmk=http%3A%2F%2Fliunian.info%2F&prev=%2Flookup&start=0&cd=bkmk&sig=xcRq5coip1CiF2l0bzOoow&day=31&month=1&yr=2012&title=%E5%B0%8F%E5%B1%85&labels=test%2C+mark&annotation=some+test+note222
+    function addNewBookmark(token, url, title, label, success, error) {
+        var now = new Date();
+            
+        if (!token) {
+            notifyNotSignin();
+            return;
+        }
+        
+        $.ajax({
+            type: 'POST',
+            dataType: 'text',
+            url: 'https://www.google.com/bookmarks/mark',
+            data: {
+                bkmk: url,
+                title: title,
+                labels: label.trim(),                
+                prev: 'lookup',
+                sig: token,
+                yr: now.getFullYear(),
+                month: now.getMonth(),
+                day: now.getDate()  
+            },
+            success: function(response) {
+                success && success(response);
+            },
+            error: function(err) {
+                error && error(err);
+            }
+        })
+    }
+    
+    function delBookmark(bookmarkId, callback) {
+        
+    }
+    
     
     //// 显示当前窗口所有的 tab
     function showOpeningTabs() {
@@ -65,25 +126,55 @@
     
     
     // 保存
-    function save() {
+    // https://www.google.com/bookmarks/mark?q=&bkmk=http%3A%2F%2Fliunian.info%2F&prev=%2Flookup&start=0&cd=bkmk&sig=xcRq5coip1CiF2l0bzOoow&day=31&month=1&yr=2012&title=%E5%B0%8F%E5%B1%85&labels=test%2C+mark&annotation=some+test+note222
+    /**
+     * @param {array} bookmarks
+     */
+    function save(bookmarks) {
+        var token = getToken();
         
+        var successAdd = function(response) {
+                bookmarks.slideUp();
+            },
+            errAdd = function(err) {
+                console.log(err);
+            };
+            
+        for (var i = 0, l = bookmarks.length; i < l; i++) {
+            var item = bookmarks.eq(i);
+            addNewBookmark(token, item.attr('data-url'), item.attr('title'), 'Sync My Tabs', successAdd, errAdd);
+        };
     }
     
     
     // 加载最近 25 个 tab
     function loadLastTabs() {
-        $.getFeed({
-            url: 'https://www.google.com/bookmarks/find?q=label%3A%22Sync%20My%20Tabs%22&output=rss&sort=date', 
-            success: function(rss){
-                var items = rss.items, html = '';
-                for (var i = items.length - 1; i >= 0; i--) {
-                    html = '<li class="ui-widget-content" data-url="' + items[i].link + '" title="' + items[i].title + '">' + items[i].title + '</li>' + html;
-                }
-                hasLoad = true;
-                $loading.hide();
-                $loadTabs.html(html);
+        $.get('https://www.google.com/bookmarks/find?q=label%3A%22Sync%20My%20Tabs%22&output=rss&sort=date', function(rss){            
+            var items = parseFeed(rss), html = ''; 
+            for (var i = items.length - 1; i >= 0; i--) {
+                html = '<li class="ui-widget-content" data-url="' + items[i].link + '" title="' + items[i].title + '" data-id="' + items[i].id + '">' + items[i].title + '</li>' + html;
             }
+            hasLoad = true;
+            $loading.hide();
+            $loadTabs.html(html);
         });
+    }
+    
+    function parseFeed(rss) {
+        var res = [];
+        
+        $(rss).find('item').each(function(index){
+            var item = {}, 
+                $this = $(this);   window.item = $(this);
+            
+            item.link = $this.find('link').text();
+            item.title = $this.find('title').text();
+            item.id = $this.children().get(7).text();
+            
+            res.push(item);
+        });
+        
+        return res;
     }
     
     // 加载已选的 tab
@@ -106,7 +197,14 @@
         
     }
     
+    // when click save, save all selected
+    $save.click(function(){
+        var arrMarks = $openTabs.find('.ui-selected');
+        
+        save(arrMarks);
+    })
     
+    // when click load, load all selected
     $load.click(function(){
         var selected = $loadTabs.find('.ui-selected');
         
