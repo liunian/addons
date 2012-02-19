@@ -7,7 +7,7 @@ body{ overflow-x: hidden; font-family: "微软雅黑","Lucida Grande", "Lucida S
 
 .tab-list { list-style-type: none; margin: 0; padding: 0;}
 .tab-list li {margin:3px 0; padding:5px 10px; height:24px; line-height:24px; overflow:hidden; font-size:14px; cursor:pointer;}
-.ui-selecting { background: #D7EBF9 url(images/ui-bg_glass_80_d7ebf9_1x400.png) 50% 50% repeat-x; }
-.ui-selected { background: #3BAAE3 url(images/ui-bg_glass_50_3baae3_1x400.png) 50% 50% repeat-x; color: white; }
+.ui-selecting { background: #fdf5ce url(images/ui-bg_glass_100_fdf5ce_1x400.png) 50% 50% repeat-x; }
+.ui-selected { background: #f6a828 url(images/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x; color: white; }
 
 .buttons {margin-top:10px; text-align:center;}

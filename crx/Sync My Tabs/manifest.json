@@ -1,12 +1,13 @@
 {
-	"name": "Sync Tabs",
-	"version": "1.0",
-	"description": "使用 label: Sync Tabs 同步 Google bookmarks",
-	"permissions": [
-        "tabs", "http://*/*", "https://*/*", "file://*/*"
+    "name": "Sync Tabs",
+    "version": "1.0",
+    "description": "使用 label: Sync Tabs 同步 Google bookmarks",
+    "background_page": "bg.html",
+    "permissions": [
+        "tabs", "http://*/*", "https://*/*"
     ],
-	"browser_action": {
-		"default_icon": "images/icon.png",
-		"popup": "popup.html"
-	}
+    "browser_action": {
+        "default_icon": "images/icon.png",
+        "popup": "popup.html"
+    }
 }
