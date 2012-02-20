@@ -60,11 +60,11 @@ jQuery(document).ready(function($){
         chromeTabs.getAllInWindow(null, function(tabs) {
             var html = '';
             for (var i = tabs.length - 1; i >= 0; i--) {
-                var tmp = '';
-                tmp = '<li class="ui-widget-content';
-                if (tabs[i].active) tmp += ' ui-selected';
-                tmp += '" data-url="' + tabs[i].url 
-                    + '" title="' + tabs[i].title + '">' + tabs[i].title + '</li>';
+                var tmp = '', tab = tabs[i];
+                tmp = '<li class="ui-widget-content ui-selectee';
+                if (tab.active || tab.selected) tmp += ' ui-selected';
+                tmp += '" data-url="' + tab.url 
+                    + '" title="' + tab.title + '">' + tab.title + '</li>';
                 
                 html = tmp + html;
             }
@@ -237,7 +237,7 @@ jQuery(document).ready(function($){
     function buildLastTabs(items) {
         var html = '';
         for (var i = items.length - 1; i >= 0; i--) {
-            html = '<li class="ui-widget-content" data-url="' 
+            html = '<li class="ui-widget-content ui-selectee" data-url="' 
                 + items[i].link + '" title="' + items[i].title 
                 + '" data-id="' + items[i].id + '">' + items[i].title 
                 + '</li>' + html;
