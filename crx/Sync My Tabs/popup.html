@@ -44,8 +44,12 @@
 			    </div>
 			</div>
 
-			<div id="tabs-3">一些说明。</div>
-			<div id="notify" style="display:none;">请先登录 Google Bookmarks: https://www.google.com/bookmarks</div>
+			<div id="tabs-3">
+			    <p>本插件来自 keakon.net 的 <a href="###" onclick="chrome.tabs.create({url: 'https://chrome.google.com/webstore/detail/eoallbnddbimmpfiodogdpndionkkjgb'})">Sync My Tabs</a> 的创意。</p>
+			    <p>需先浏览器登录 <a href="###" onclick="chrome.tabs.create({url:'https://www.google.com/bookmarks'})">Google Bookmars</a> 。</p>
+			    <p><a href="###" onclick="chrome.tabs.create({url:'https://www.google.com/bookmarks'})">Google Bookmars</a> 改版后，API 发生了变化，原插件不能正常使用了，于是查看了一下网络请求，自己写了一个。由于暂没两台电脑同时使用的情况，所以没有加上自动载入的功能。</p>
+			</div>
+			<div id="notify" style="display:none;">请先登录 <a href="javascript:;" onclick="chrome.tabs.create({url: 'https://www.google.com/bookmarks'})">Google Bookmarks</a></div>
 		</div>
     </div>
 </body>
