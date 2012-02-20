@@ -60,9 +60,13 @@ jQuery(document).ready(function($){
         chromeTabs.getAllInWindow(null, function(tabs) {
             var html = '';
             for (var i = tabs.length - 1; i >= 0; i--) {
-                html = '<li class="ui-widget-content" data-url="' + tabs[i].url 
-                + '" title="' + tabs[i].title + '">' + tabs[i].title + '</li>' 
-                + html;
+                var tmp = '';
+                tmp = '<li class="ui-widget-content';
+                if (tabs[i].active) tmp += ' ui-selected';
+                tmp += '" data-url="' + tabs[i].url 
+                    + '" title="' + tabs[i].title + '">' + tabs[i].title + '</li>';
+                
+                html = tmp + html;
             }
             $openTabs.html(html);
         });
