@@ -18,4 +18,6 @@
   [Google Bookmarks]: https://www.google.com/bookmarks
 
 
+##Update in 2012-03-05
 
+移除删除功能，改为归档(archive)功能，即把原标签“Sync My Tabs“修改为“Sync My Tabs archive“。  

@@ -1,6 +1,6 @@
 {
     "name": "Sync Tabs",
-    "version": "1.0",
+    "version": "1.1",
     "description": "使用 label: Sync Tabs 同步 Google bookmarks",
     "background_page": "bg.html",
     "permissions": [
