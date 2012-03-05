@@ -15,7 +15,7 @@
  *    windowId: 408
  * }
  */
-jQuery(document).ready(function($){
+jQuery(document).ready(function($) {
 
     var chromeTabs = chrome.tabs,
         $window = $(window),
@@ -25,7 +25,7 @@ jQuery(document).ready(function($){
         $loading = $('#loading'),
         $save = $('#save'),
         $load = $('#load'),
-        $del = $('#del'),
+        $archive = $('#archive'),
         $loadAndDel = $('#loadAndDel'),
         $notify = $('#notify'),
         loading = false;
@@ -47,13 +47,13 @@ jQuery(document).ready(function($){
         show: 'slide',
         hide: 'slide'
     });
-    
+
     // ui init end ===========
-    
+
 
     // get token from localStorage
     var token = localStorage.bookmarksToken;
-    
+
 
    //// 显示当前窗口所有的 tab
     function showOpeningTabs() {
@@ -63,16 +63,16 @@ jQuery(document).ready(function($){
                 var tmp = '', tab = tabs[i];
                 tmp = '<li class="ui-widget-content ui-selectee';
                 if (tab.active || tab.selected) tmp += ' ui-selected';
-                tmp += '" data-url="' + tab.url 
+                tmp += '" data-url="' + tab.url
                     + '" title="' + tab.title + '">' + tab.title + '</li>';
-                
+
                 html = tmp + html;
             }
             $openTabs.html(html);
         });
     }
-    
-    
+
+
     function notifyNotSignin() {
         $notify.dialog('open');
     }
@@ -101,10 +101,10 @@ jQuery(document).ready(function($){
 
     //
     // https://www.google.com/bookmarks/mark?q=&bkmk=url&prev=%2Flookup&start=0&cd=bkmk&sig=token&day=31&month=1&yr=2012&title=title&labels=test&annotation=some
-    function addNewBookmark(token, jQBookmark, success, error) {
+    function addNewBookmark(token, jQBookmark, label, success, error) {
         var now = new Date();
 
-        if (!token || token == "undefined") {
+        if (!token || token == 'undefined') {
             notifyNotSignin();
             return;
         }
@@ -116,7 +116,7 @@ jQuery(document).ready(function($){
             data: {
                 bkmk: jQBookmark.attr('data-url'),
                 title: jQBookmark.attr('title'),
-                labels: 'Sync My Tabs',
+                labels: label,
                 prev: '/lookup',
                 sig: token,
                 yr: now.getFullYear(),
@@ -135,28 +135,12 @@ jQuery(document).ready(function($){
 
 
     // https://www.google.com/bookmarks/mark?dlq=书签Id&sig=签名字符串
-    function delBookmark(token, jQBookmark, success, error) {
-        if (!token || token == "undefined") {
-            notifyNotSignin();
-            return;
-        }
+    // 删除标签
 
-        $.ajax({
-            type: 'GET',
-            dataType: 'text',
-            url: 'https://www.google.com/bookmarks/mark',
-            data: {
-                dlq: jQBookmark.attr('data-id'),
-                sig: token
-            },
-            success: function(response) {
-                localStorage.updateTime = new Date().getTime();
-                success && success.call(jQBookmark);
-            },
-            error: function(err) {
-                error && error.call(jQBookmark, err);
-            }
-        });
+
+    // 归档，实际还是使用 add 功能，但把标签替换掉，则会自动变更
+    function archiveBookmark(token, jQBookmark, success, error) {
+        addNewBookmark(token, jQBookmark, 'Sync My Tabs archive', success, error);
     }
 
 
@@ -183,7 +167,7 @@ jQuery(document).ready(function($){
             };
 
         bookmarks.each(function() {
-            addNewBookmark(token, $(this), successAdd, errAdd);
+            addNewBookmark(token, $(this), 'Sync My Tabs', successAdd, errAdd);
         });
     }
 
@@ -191,7 +175,7 @@ jQuery(document).ready(function($){
      * https://www.google.com/bookmarks/mark?dlq=书签Id&sig=签名字符串
      * @parm {jQ array} bookmarks
      */
-    function delSelectTabs(bookmarks) {
+    function archiveSelectTabs(bookmarks) {
         var token = getToken(),
             successDel = function() {
                 this.slideUp();
@@ -201,45 +185,45 @@ jQuery(document).ready(function($){
             };
 
         bookmarks.each(function() {
-            delBookmark(token, $(this), successDel, errDel);
+            archiveBookmark(token, $(this), successDel, errDel);
         });
     }
 
     // 加载最近 25 个 tab
     function loadLastTabs(hasNoStorage) {
-        if (!token || token == "undefined") {
+        if (!token || token == 'undefined') {
             notifyNotSignin();
             return;
         }
-        
+
         loading = true;
         $loading.show();
-        
-        $.get('https://www.google.com/bookmarks/find?q=label%3A%22Sync%20My%20Tabs%22&output=rss&sort=date', function(rss) {            
+
+        $.get('https://www.google.com/bookmarks/find?q=label%3A%22Sync%20My%20Tabs%22&output=rss&sort=date', function(rss) {
             var items = parseFeed(rss),
                 now = new Date().getTime();
-            
+
             loading = false;
             $loading.hide();
-            
+
             localStorage.updateTime = now;
             localStorage.lastTabs = JSON.stringify({
                 'lastTime': now,
                 'bookMarks': items
             });
-            
+
             if (hasNoStorage) {
                 $loadTabs.html(buildLastTabs(items));
             }
         });
     }
-    
+
     function buildLastTabs(items) {
         var html = '';
         for (var i = items.length - 1; i >= 0; i--) {
-            html = '<li class="ui-widget-content ui-selectee" data-url="' 
-                + items[i].link + '" title="' + items[i].title 
-                + '" data-id="' + items[i].id + '">' + items[i].title 
+            html = '<li class="ui-widget-content ui-selectee" data-url="'
+                + items[i].link + '" title="' + items[i].title
+                + '" data-id="' + items[i].id + '">' + items[i].title
                 + '</li>' + html;
         }
         return html;
@@ -288,24 +272,24 @@ jQuery(document).ready(function($){
         openSelectTabs(selected);
     });
 
-    $del.click(function() {
+    $archive.click(function() {
         var selected = $loadTabs.find('.ui-selected');
-        delSelectTabs(selected);
+        archiveSelectTabs(selected);
     });
 
     $loadAndDel.click(function() {
         var selected = $loadTabs.find('.ui-selected');
         openSelectTabs(selected);
-        delSelectTabs(selected);
+        archiveSelectTabs(selected);
     });
 
     $loadHandler.on('mouseenter', function(e) {
-        if (!localStorage.lastTabs || 
+        if (!localStorage.lastTabs ||
             JSON.parse(localStorage.lastTabs).lastTime != localStorage.updateTime) {
             if (loading) return;
             loadLastTabs(!localStorage.lastTabs);
         } else {
-            $loadTabs.html(buildLastTabs(JSON.parse(localStorage.lastTabs).bookMarks));            
+            $loadTabs.html(buildLastTabs(JSON.parse(localStorage.lastTabs).bookMarks));
         }
     });
 
@@ -314,7 +298,7 @@ jQuery(document).ready(function($){
 
     $window.bind('load', function() {
         setTimeout(function() {
-            if (!token || token == "undefined") {
+            if (!token || token == 'undefined') {
                 localStorage.bookmarksToken = token = getToken();
             }
         }, 1000);
