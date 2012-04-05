@@ -50,6 +50,19 @@ jQuery(document).ready(function($) {
 
     // ui init end ===========
 
+    /**
+     *  * escape html as htmlspecialchars in php with ENT_QUOTES(htmlspecial(unsafe, ENT_QUOTES))
+     *   * from: http://stackoverflow.com/questions/1787322/htmlspecialchars-equivalent-in-javascript
+     *    * a more completed version: https://raw.github.com/kvz/phpjs/master/functions/strings/htmlspecialchars.js
+     *     */
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
 
     // get token from localStorage
     var token = localStorage.bookmarksToken;
@@ -64,7 +77,7 @@ jQuery(document).ready(function($) {
                 tmp = '<li class="ui-widget-content ui-selectee';
                 if (tab.active || tab.selected) tmp += ' ui-selected';
                 tmp += '" data-url="' + tab.url
-                    + '" title="' + tab.title + '">' + tab.title + '</li>';
+                    + '" title="' + escapeHtml(tab.title) + '">' + escapeHtml(tab.title) + '</li>';
 
                 html = tmp + html;
             }
@@ -237,7 +250,7 @@ jQuery(document).ready(function($) {
                 $this = $(this); window.item = $(this);
 
             item.link = $this.find('link').text();
-            item.title = $this.find('title').text();
+            item.title = escapeHtml($this.find('title').text());
             // <smh:bkmk_id>xxxxxxx</smh:bkmk_id>
             // 此处使用了一种不严谨的获取方式，不判断前缀，因为没找到合适的方法
             item.id = $this.find('bkmk_id').text();
