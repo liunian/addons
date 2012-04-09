@@ -45,4 +45,4 @@ function parseFeed(rss) {
     
 setInterval(function(){
     loadLastTabs();
-}, 60000);
+}, 30000);
