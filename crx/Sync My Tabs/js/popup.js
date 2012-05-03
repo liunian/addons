@@ -94,7 +94,7 @@ jQuery(document).ready(function($) {
     //
     // urlModLabel = "/bookmarks/mark?op=modlabel&sig=
     function getToken() {
-        var pattern = /bookmarks\/mark\?op=modlabel&sig=([^"]*)/,
+        var pattern = /<input type="hidden" name="sig" value="([^"]*)">/,
             token;
 
         $.ajax({
