@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+
+  "name": "QR",
+  "description": "Creates a QR code for current tab or custom text",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "imgs/icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "tabs"
+  ]
+}
