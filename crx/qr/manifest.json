@@ -3,7 +3,7 @@
 
   "name": "QR",
   "description": "Creates a QR code for current tab or custom text",
-  "version": "1.0",
+  "version": "1.0.1",
   "browser_action": {
     "default_icon": "imgs/icon.png",
     "default_popup": "popup.html"
