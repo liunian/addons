@@ -30,7 +30,8 @@ function pressInput(e) {
 
 function createQRCodeForCurTab() {
     chrome.tabs.query({
-        active: true
+        active: true,
+        currentWindow: true
     }, function(tabs) {
         if (tabs.length) {
             var url = tabs[0].url;
